@@ -2,12 +2,22 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.Scanner;
 
 public class EchoClient {
     private DatagramSocket socket;
     private InetAddress address;
 
     private byte[] buf;
+
+    public static void main(String[] args) {
+        EchoClient ec = new EchoClient();
+        while (true) {
+            Scanner sc = new Scanner(System.in);
+            String s = sc.nextLine();
+            ec.sendEcho(s);
+        }
+    }
 
     public EchoClient() {
         try {

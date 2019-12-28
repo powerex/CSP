@@ -9,6 +9,15 @@ public class EchoServer extends Thread {
     protected boolean running;
     protected byte[] buf = new byte[256];
 
+    public static void main(String[] args) {
+        try {
+            EchoServer es =  new EchoServer();
+            es.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public EchoServer() throws IOException {
         socket = new DatagramSocket(4445);
     }

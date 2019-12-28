@@ -77,9 +77,6 @@ public class UDPSendClient {
     }
 
     public static void main(String[] args) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter("src/main/resources/text.txt"));
-        writer.write("Test");
-        writer.close();
         UDPSendClient client = new UDPSendClient();
         client.createConnection();
     }
