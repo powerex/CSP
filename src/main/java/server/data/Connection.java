@@ -1,4 +1,4 @@
-package server.data;
+package data;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -74,7 +74,7 @@ public class Connection {
 	public InetAddress getAddress() {
 		return this.addr;
 	}
-	
+
 	/**
 	 * Close the connection to the server
 	 */

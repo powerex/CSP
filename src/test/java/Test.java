@@ -1,6 +1,5 @@
 import static org.junit.Assert.*;
 import server.client.ThreadedUDPClient;
-import server.data.Connection;
 import server.data.Packet;
 import server.data.PacketHandler;
 import server.data.UID;

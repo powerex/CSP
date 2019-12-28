@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import server.data.Connection;
 import server.data.Packet;
 import server.data.PacketHandler;
 
@@ -18,16 +17,15 @@ import server.data.PacketHandler;
  */
 public class ThreadedUDPClient implements Runnable {
 	
-	private Connection connection;
+	private data.Connection connection;
 	private boolean running;
 	
 	private DatagramSocket socket;
-	private Thread process, send, receive;
-	
+
 	public ThreadedUDPClient(String addr, int port) {
 		try {
 			socket = new DatagramSocket();
-			connection = new Connection(socket, InetAddress.getByName(addr), port, 0);
+			connection = new data.Connection(socket, InetAddress.getByName(addr), port, 0);
 			this.init();
 		} catch (SocketException | UnknownHostException e) {
 			e.printStackTrace();
@@ -38,16 +36,16 @@ public class ThreadedUDPClient implements Runnable {
 	 * Initialise the client
 	 */
 	private void init() {
-		process = new Thread(this, "server_process");
+		Thread process = new Thread(this, "server_process");
 		process.start();
 	}
 	
 	/**
 	 * Send some data
-	 * @param the data
+	 * @param data array of bytes
 	 */
 	public void send(final byte[] data) {
-		send = new Thread("Sending Thread") {
+		Thread send = new Thread("Sending Thread") {
 			public void run() {
 				connection.send(data);
 			}
@@ -60,18 +58,18 @@ public class ThreadedUDPClient implements Runnable {
 	 * Receive data on the given server connection
 	 */
 	public void receive(final PacketHandler handler) {
-		receive = new Thread("receive_thread") {
+		Thread receive = new Thread("receive_thread") {
 			public void run() {
-				while(running) {
+				while (running) {
 					byte[] buffer = new byte[1024];
 					DatagramPacket dgpacket = new DatagramPacket(buffer, buffer.length);
-					
+
 					try {
 						socket.receive(dgpacket);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					
+
 					handler.process(new Packet(dgpacket.getData(), dgpacket.getAddress(), dgpacket.getPort()));
 				}
 			}
@@ -79,15 +77,7 @@ public class ThreadedUDPClient implements Runnable {
 		
 		receive.start();
 	}
-	
-	/**
-	 * Close the current connection for this client
-	 */
-	public void close() {
-		connection.close();
-		running = false;
-	}
-	
+
 	@Override
 	public void run() {
 		running = true;

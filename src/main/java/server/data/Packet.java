@@ -2,20 +2,21 @@ package server.data;
 
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import server.data.*;
 
 public class Packet {
 
 	private byte[] data;
 	private InetAddress ip;
 	private int port;
-	private Connection conn;
+	private data.Connection conn;
 	
 	/**
 	 * Create a new packet
 	 * @param data The data to send
 	 * @param receiver The packets' reciever
 	 */
-	public Packet(byte[] data, Connection receiver) {
+	public Packet(byte[] data, data.Connection receiver) {
 		this.data = data;
 		this.conn = receiver;
 	}
@@ -31,7 +32,7 @@ public class Packet {
 		this.ip = ip;
 		this.port = port;
 		
-		this.conn = new Connection(null, ip, port, 10);
+		this.conn = new data.Connection(null, ip, port, 10);
 	}
 	
 	/**
@@ -62,7 +63,7 @@ public class Packet {
 	 * Get the connection on which this packet was sent
 	 * @return the connection
 	 */
-	public Connection getConnection() {
+	public data.Connection getConnection() {
 		return this.conn;
 	}
 	

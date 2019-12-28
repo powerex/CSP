@@ -6,7 +6,6 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
-import server.data.Connection;
 import server.data.Packet;
 import server.data.PacketHandler;
 import server.data.UID;
@@ -27,7 +26,7 @@ public class ThreadedUDPServer implements Runnable {
 	private Thread send, receive, process;
 	
 	/* Client relevant */
-	public static ArrayList<Connection> CLIENTS = new ArrayList<Connection>();
+	public static ArrayList<data.Connection> CLIENTS = new ArrayList<data.Connection>();
 	
 	
 	/**
@@ -63,11 +62,6 @@ public class ThreadedUDPServer implements Runnable {
 	}
 	
 	
-	/**
-	 * Send a packet to a client
-	 * @param packet
-	 * @param client
-	 */
 	public void send(final Packet packet) {
 		send = new Thread("send_thread") {
 			public void run() {
@@ -89,12 +83,9 @@ public class ThreadedUDPServer implements Runnable {
 		send.start();
 	}
 	
-	/**
-	 * Send a packet to all connected clients
-	 * @param packet
-	 */
+
 	public void broadcast(byte[] data) {
-		for(Connection c : CLIENTS) {
+		for(data.Connection c : CLIENTS) {
 			send(new Packet(data, c.getAddress(), c.getPort()));
 		}
 	}
